@@ -17,8 +17,8 @@ class Habit(models.Model):
                                             help_text="Укажите периодичность выполнения привычки в днях")
     reward = models.CharField(max_length=255, blank=True, null=True, verbose_name="Награда за выполнение привычки",
                               help_text="Награду можно не указывать")
-    time_to_complete = models.PositiveIntegerField(verbose_name="Время на выполнение", default=5,
-                                                   help_text="Укажите время выполнения привычки в минутах")
+    time_to_complete = models.PositiveIntegerField(verbose_name="Время выполнение в секундах(не больше 120 с)",
+                                                   default=120, help_text="Укажите время выполнения привычки")
     is_public = models.BooleanField(default=True, verbose_name="Публичность привычки", help_text="Указать публичность")
 
     def __str__(self):

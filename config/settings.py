@@ -174,9 +174,17 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_BROKER')
 
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+CELERY_BEAT_SCHEDULE = {
+    'send_habit_for_user': {
+        'task': 'habits.tasks.send_habit_for_user',  # Путь к задаче
+        'schedule': timedelta(minutes=1),  # Расписание выполнения задачи
+    },
+}
+
 CORS_ALLOWED_ORIGINS = [
     "https://example.com",
-    "https://sub.example.com",
     "http://localhost:8000",
 ]
 
@@ -185,3 +193,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False
+
+TELEGRAM_URL = os.getenv('TELEGRAM_URL')
+
+API_TOKEN_TELEGRAM = os.getenv('API_TOKEN_TELEGRAM')

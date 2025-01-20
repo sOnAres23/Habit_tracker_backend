@@ -7,6 +7,7 @@ from users.serializers import UserSerializer
 
 
 class UserViewSet(ModelViewSet):
+    """Контроллер для представления пользователя"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (AllowAny, )
@@ -16,6 +17,7 @@ class UserViewSet(ModelViewSet):
 
 
 class UserCreateAPIView(CreateAPIView):
+    """Контроллер для создания пользователя"""
     serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = (AllowAny, )

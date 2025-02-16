@@ -1,3 +1,4 @@
+from django.views.generic import TemplateView
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
@@ -6,6 +7,11 @@ from habits.models import Habit
 from habits.paginators import MyCustomPagination
 from habits.serializers import HabitSerializer
 from users.permissions import IsOwnerOrReadOnly
+
+
+class IndexView(TemplateView):
+    """Класс представления начальной страницы"""
+    template_name = "habits/home.html"
 
 
 class HabitViewSet(ModelViewSet):

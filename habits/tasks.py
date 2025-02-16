@@ -2,7 +2,6 @@ from datetime import datetime
 
 from celery import shared_task
 
-
 from habits.models import Habit
 from habits.services import send_message
 
@@ -16,9 +15,8 @@ def send_habit_for_user():
 
     for habit in habits:
         habit_time = habit.time.strftime('%H:%M:%S')
-        print(current_time)
-        print(habit_time)
         if current_time == habit_time:
-            message = f"Напоминание: {habit.action} в {habit.time.strftime('%H:%M')}, место: {habit.place}❤"
+            message = (f"Напоминание: {habit.action}, в {habit.time.strftime('%H:%M')},"
+                       f" место: {habit.place}❤ за это приятность: {habit.reward}😊")
             chat_id = habit.user.tg_chat_id
             send_message(chat_id=chat_id, message=message)

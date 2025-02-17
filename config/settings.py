@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
+import sys
 from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
@@ -145,8 +146,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -165,6 +166,14 @@ if CACHE_ENABLE:
         'default': {
             'BACKEND': 'django.core.cache.backends.redis.RedisCache',
             'LOCATION': os.getenv('LOCATION'),
+        }
+    }
+
+if "test" in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'test_db.sqlite3',
         }
     }
 

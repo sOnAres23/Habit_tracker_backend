@@ -10,5 +10,6 @@ router.register(r"habits", views.HabitViewSet, basename="habits")
 
 urlpatterns = [
     path("public_habits/", views.PublicHabitListApiView.as_view(), name="public_habits"),
+    path("home/", views.IndexView.as_view(), name="home"),
 
 ] + router.urls

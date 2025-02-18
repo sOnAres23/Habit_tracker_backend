@@ -1,7 +1,7 @@
 FROM python:3.12
 
 # Устанавливаем рабочую директорию в контейнере
-WORKDIR /habit_tracker
+WORKDIR /habits
 
 RUN apt-get update && \
        apt-get install -y gcc libpq-dev && \
@@ -21,8 +21,8 @@ RUN poetry install --no-root
 COPY . .
 
 # Создаем директорию для медиафайлов и статики
-RUN mkdir -p /habit_tracker/media
-RUN mkdir -p /habit_tracker/staticfiles && chmod -R 755 /habit_tracker/staticfiles
+RUN mkdir -p /habits/media
+RUN mkdir -p /habits/staticfiles && chmod -R 755 /habits/staticfiles
 
 # Открываем порт 8000 для взаимодействия с приложением
 EXPOSE 8000

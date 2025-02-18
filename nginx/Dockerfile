@@ -1,6 +1,6 @@
 FROM nginx:latest
 
-RUN mkdir -p /habit_tracker/staticfiles
+RUN mkdir -p /habits/staticfiles
 
 COPY nginx.conf /etc/nginx/nginx.conf
 

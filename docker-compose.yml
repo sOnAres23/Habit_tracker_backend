@@ -8,21 +8,21 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - habit_tracker_network
+      - habits_network
     healthcheck:
-      test: [ "CMD-SHELL", "-c", "pg_isready -U $POSTGRES_USER" ]
+      test: ["CMD-SHELL", "-c", "pg_isready -U $USER"]
       interval: 30s
       timeout: 5s
       retries: 5
 
-  habit_tracker:
+  habits:
     build:
       context: .
       dockerfile: Dockerfile
     command: sh -c "poetry run python manage.py collectstatic --noinput && poetry run gunicorn config.wsgi:application --bind 0.0.0.0:8000"
     volumes:
-      - .:/habit_tracker
-      - static_volume:/habit_tracker/staticfiles
+      - .:/habits
+      - static_volume:/habits/staticfiles
     ports:
       - "8000:8000"
     environment:
@@ -39,34 +39,42 @@ services:
       - postgres
       - redis
     networks:
-      - habit_tracker_network
+      - habits_network
+    env_file:
+      - .env
 
   redis:
     image: redis:latest
+    env_file:
+      - .env
     networks:
-      - habit_tracker_network
+      - habits_network
 
   celery:
     build: .
     command: poetry run celery -A config worker -l INFO -P eventlet
     volumes:
-      - .:/habit_tracker
+      - .:/habits
     depends_on:
       - postgres
       - redis
     networks:
-      - habit_tracker_network
+      - habits_network
+    env_file:
+      - .env
 
   celery-beat:
     build: .
     command: poetry run celery -A config beat -l INFO
     volumes:
-      - .:/habit_tracker
+      - .:/habits
     depends_on:
       - postgres
       - redis
     networks:
-      - habit_tracker_network
+      - habits_network
+    env_file:
+      - .env
 
   nginx:
     build:
@@ -77,12 +85,12 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - static_volume:/nginx/staticfiles
     depends_on:
-      - habit_tracker
+      - habits
     networks:
-      - habit_tracker_network
+      - habits_network
 
 networks:
-  habit_tracker_network:
+  habits_network:
 
 volumes:
   postgres_data:

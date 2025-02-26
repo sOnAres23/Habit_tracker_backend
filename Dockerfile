@@ -28,4 +28,4 @@ RUN mkdir -p /habits/staticfiles && chmod -R 755 /habits/staticfiles
 EXPOSE 8000
 
 # Определяем команду для запуска приложения
-CMD ["poetry", "run", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py collectstatic --noinput && gunicorn config.wsgi:application --timeout 120 --bind 0.0.0.0:8000"]

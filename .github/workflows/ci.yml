@@ -50,6 +50,10 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-root
 
+      - name: Collect static files
+        run: |
+          python manage.py collectstatic --noinput
+
       - name: Run tests
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}

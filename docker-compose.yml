@@ -15,6 +15,13 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis:latest
+    env_file:
+      - ./.env
+    networks:
+      - habits_network
+
   habits:
     build:
       context: .
@@ -28,27 +35,16 @@ services:
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - DEBUG=${DEBUG}
-      - DATABASE_URL=postgres://${USER}:${PASSWORD}@postgres:${PORT}/${NAME}
-      - EMAIL_HOST=${EMAIL_HOST}
-      - EMAIL_PORT=${EMAIL_PORT}
-      - EMAIL_USE_TLS=False
-      - EMAIL_USE_SSL=True
-      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
-      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}
+      - TELEGRAM_URL=${TELEGRAM_URL}
+      - API_TOKEN_TELEGRAM=${API_TOKEN_TELEGRAM}
     depends_on:
       - postgres
       - redis
     networks:
       - habits_network
     env_file:
-      - .env
-
-  redis:
-    image: redis:latest
-    env_file:
-      - .env
-    networks:
-      - habits_network
+      - ./.env
 
   celery:
     build: .
@@ -61,7 +57,7 @@ services:
     networks:
       - habits_network
     env_file:
-      - .env
+      - ./.env
 
   celery-beat:
     build: .
@@ -74,7 +70,7 @@ services:
     networks:
       - habits_network
     env_file:
-      - .env
+      - ./.env
 
   nginx:
     build:

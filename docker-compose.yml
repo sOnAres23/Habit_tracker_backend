@@ -10,7 +10,7 @@ services:
     networks:
       - habits_network
     healthcheck:
-      test: ["CMD-SHELL", "-c", "pg_isready -U $USER"]
+      test: ["CMD-SHELL", "-c", "pg_isready -U $POSTGRES_USER"]
       interval: 30s
       timeout: 5s
       retries: 5
